@@ -1,0 +1,1 @@
+This program uses shotgun stochastic search to explore the space of graphical models for a contingency table. Each model is scored based on the laplace approximation to the posterior.

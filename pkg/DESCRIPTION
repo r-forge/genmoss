@@ -1,0 +1,10 @@
+Package: GenMOSS
+Type: Package
+Title: Application of MOSS algorithm to genome-wide association study (GWAS)
+Version: 1.0
+Date: 2009-08-12
+Author: Olga Vesselova, Laurent Briollais, Adrian Dobra, Helene Massam.
+Maintainer: <laurent@lunenfeld.ca>
+Description: Performs genome-wide analysis of dense SNP array data using the mode oriented stochastic search (MOSS) algorithm in a case-control design. Finds combination of best predictive SNPs associated with the response. The identified regression models are then tested by peforming cross-validation and prediction in a test set. Includes function for visualization of the obtained results. Includes preprocessing of the data from Plink format to the format required by the MOSS algorithm. 
+License: GPL (>=2)
+Packaged: 2010-09-07 14:31:28 UTC; olga

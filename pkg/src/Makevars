@@ -1,0 +1,6 @@
+PKG_CXXFLAGS= -I../CLAPACK-3.2.1/INCLUDE -I../include/gsl
+
+PKG_LIBS=
+#PKG_LIBS=-L.. -lm -lf2c -lblas -lgslcblas -lgsl -llapack
+
+

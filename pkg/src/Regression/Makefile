@@ -1,0 +1,42 @@
+LARGEREG_LSTDFLG = -m64 -lm
+LARGEREG_INCLUDE = -I..
+LARGEREG_LIB = -L..
+
+LARGEREG_OBJS = shotgun.so
+
+all:	${LARGEREG_OBJS}
+	rm -f *.o
+
+model.o: Model.cpp Model.h
+	g++ -g -c -fPIC Model.cpp -o model.o 
+
+util.o: util.cpp util.h
+	g++ -g -c -fPIC util.cpp -o util.o
+
+data.o: Data.cpp Data.h
+	g++ -g -c -fPIC Data.cpp -o data.o
+
+graph.o: newgraph.cpp graph.h
+	g++ -g -c -fPIC newgraph.cpp -o graph.o
+
+table.o: newtable.cpp newtable.h
+	g++ -g -c -fPIC newtable.cpp -o table.o
+
+cmodel.o: cmodel.cpp cmodel.h
+	g++ -g -c -fPIC cmodel.cpp -o cmodel.o ${LARGEREG_INCLUDE}
+
+equations.o: equations.cpp equations.h
+	g++ -g -c -fPIC equations.cpp -o equations.o
+
+regmodels.o: regmodels.cpp regmodels.h
+	g++ -g -c -fPIC regmodels.cpp -o regmodels.o ${LARGEREG_INCLUDE} ${LARGEREG_LIB}
+
+gibbssampler.o: gibbssampler.cpp gibbssampler.h
+	g++ -g -c -fPIC gibbssampler.cpp ${LARGEREG_INCLUDE} ${LARGEREG_LIB}
+
+shotgun.so: largeregcont.cpp largeregcont.h util.o data.o graph.o table.o cmodel.o equations.o gibbssampler.o regmodels.o model.o
+	R CMD SHLIB largeregcont.cpp util.o data.o graph.o table.o cmodel.o equations.o gibbssampler.o regmodels.o model.o -o shotgun.so 
+
+clean:
+	rm -f *.o
+	rm -f ${LARGEREG_OBJS}
