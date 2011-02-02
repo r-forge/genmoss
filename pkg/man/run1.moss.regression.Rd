@@ -40,7 +40,7 @@ num.confounding.vars=0)
 
 }
 \details{
-	MOSS algorithm is run several times \code{\var{chain.replicates}}, to determine if the best regressions have been identified. After the regressions are identified, the best log-linear model associated with the regressions is found. The process outputs 6 files in the same directory where \code{\var{genome.file}} is located. These files begin with the name of the \code{\file{genome.file}}, and end with .countmodels.txt, .log, .reg, .reg.model1.txt, .spaceratio.txt, and .var. The file ending with .reg is necessary for the prediction step functions \code{\link{run2.prediction.cvv}} and \code{\link{run3.prediction.train.test}}. 
+	MOSS algorithm is run several times \code{\var{chain.replicates}}, to determine if the best regressions have been identified. After the regressions are identified, the best log-linear model associated with the regressions is found. The process outputs 6 files in the same directory where \code{\var{genome.file}} is located. These files begin with the name of the \code{\var{genome.file}}, and end with .countmodels.txt, .log, .reg, .reg.model1.txt, .spaceratio.txt, and .var. The file ending with .reg is necessary for the prediction step functions \code{\link{run2.prediction.cvv}} and \code{\link{run3.prediction.train.test}}. 
 }
 \value{
 \item{out.name}{The name of one of the output files (ending with .reg) that will be necessary for the prediction steps.}
