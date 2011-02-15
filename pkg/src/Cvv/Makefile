@@ -19,7 +19,7 @@ model.o: model.cpp model.h
 	g++ -m64 -g -c -fPIC model.cpp -o model.o
 		
 cvv.so: grjmcmc.cpp grjmcmc.h graph.o table.o data.o model.o params.o
-	R CMD SHLIB grjmcmc.cpp graph.o table.o data.o model.o params.o -o cvv.so 
+	${R_HOME}/bin/R CMD SHLIB grjmcmc.cpp graph.o table.o data.o model.o params.o -o cvv.so 
 		
 clean:
 		rm -f *.o

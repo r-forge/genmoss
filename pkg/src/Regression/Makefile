@@ -35,7 +35,7 @@ gibbssampler.o: gibbssampler.cpp gibbssampler.h
 	g++ -g -c -fPIC gibbssampler.cpp ${LARGEREG_INCLUDE} ${LARGEREG_LIB}
 
 shotgun.so: largeregcont.cpp largeregcont.h util.o data.o graph.o table.o cmodel.o equations.o gibbssampler.o regmodels.o model.o
-	R CMD SHLIB largeregcont.cpp util.o data.o graph.o table.o cmodel.o equations.o gibbssampler.o regmodels.o model.o -o shotgun.so 
+	${R_HOME}/bin/R CMD SHLIB largeregcont.cpp util.o data.o graph.o table.o cmodel.o equations.o gibbssampler.o regmodels.o model.o -o shotgun.so 
 
 clean:
 	rm -f *.o
