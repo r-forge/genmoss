@@ -17,7 +17,6 @@ graph.o: newgraph.cpp graph.h
 		
 model.o: model.cpp model.h
 	g++ -m64 -g -c -fPIC model.cpp -o model.o
-	echo ${R_HOME}
 	
 traintest.so: grjmcmc.cpp grjmcmc.h graph.o table.o data.o model.o params.o
 	${R_HOME}/bin/R CMD SHLIB grjmcmc.cpp graph.o table.o data.o model.o params.o -o traintest.so
