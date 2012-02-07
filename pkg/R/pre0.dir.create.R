@@ -13,7 +13,7 @@ pre0.dir.create <- function(dir.out=".", out.name="newdata", prefix.dir="d") {
 #          write your own function, similar to ex2plink()
 # out$d2 - 
 # ...
-# out$d12 -
+# out$d11 -
 
 dir.main <- paste(dir.out, out.name, sep="/") 
 d0  <- paste(dir.main, "/", prefix.dir, "00_original", sep="")
@@ -27,7 +27,7 @@ d7  <- paste(dir.main, "/", prefix.dir, "07_numeric", sep="")
 d8  <- paste(dir.main, "/", prefix.dir, "08_discrete", sep="")
 d9  <- paste(dir.main, "/", prefix.dir, "09_merged", sep="")
 d10 <- paste(dir.main, "/", prefix.dir, "10_totrain", sep="")
-#d11 <- paste(dir.main, "/", prefix.dir, "11_regression", sep="")
+d11 <- paste(dir.main, "/", prefix.dir, "11_segment", sep="")
 #d12 <- paste(dir.main, "/", prefix.dir, "12_prediction", sep="")
 
 
@@ -43,9 +43,9 @@ dir.create(d7)
 dir.create(d8)
 dir.create(d9)
 dir.create(d10)
-#dir.create(d11)
+dir.create(d11)
 #dir.create(d12)
 
-return(list(d0=d0, d1=d1, d2=d2, d3=d3, d4=d4, d5=d5, d6=d6, d7=d7, d8=d8, d9=d9, d10=d10)) #, d11=d11, d12=d12))
+return(list(d0=d0, d1=d1, d2=d2, d3=d3, d4=d4, d5=d5, d6=d6, d7=d7, d8=d8, d9=d9, d10=d10, d11=d11)) #, d12=d12))
 
 }

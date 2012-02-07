@@ -92,7 +92,7 @@ if(length(all.dat) == 0 || length(all.ped) == 0)
 	return()
 
 if(length(all.dat) != 1) {
-	print(paste("Warning: more than one .dat file for chromosome ", chrom.num, " was detected, using the first:", sep=""))
+	print(paste("Warning: more than one .dat file for chromosome ", chrom.num, " was detected, using the last:", sep=""))
 	print(all.dat)
 }
 

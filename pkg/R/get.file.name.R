@@ -1,7 +1,8 @@
-get.file.name <- function(dir, prefix="", key="", ending="", verbal=TRUE) {
+get.file.name <- function(dir, prefix="", key="", ending="", verbal=TRUE, onename=FALSE) {
 # From given directory dir, returns all files that start from given prefix,
 # and that end with given ending, and those that contain the keyword key. 
-# 
+# param:
+# onename - flag if TRUE, then will return only the LAST file name that fits the description, not all the files.
 # Example:
 #
 # 
@@ -60,6 +61,10 @@ if (length(file.id) == 0) {
         return(def.return)
 }
 all.files <- all.files[file.id]
+
+if(onename) { # return just the last one.
+	return(all.files[length(all.files)]) 
+}
 
 return(all.files)
 

@@ -27,4 +27,4 @@ export(run3.prediction.train.test)
 export(run4.show.prediction)
 export(run4.save.prediction)
 export(run5.brier)
-
+export(tune1.subsets)

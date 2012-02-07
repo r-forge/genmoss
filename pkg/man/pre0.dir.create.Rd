@@ -23,7 +23,7 @@ pre0.dir.create(dir.out = ".", out.name = "newdata", prefix.dir = "d")
 }
 }
 \details{
-        The subdirectory structure is designed to easily work with preprocessing functions of GenMOSS. Since GenMOSS preprocessing steps need to be performed in a fixed order, and there are several files per chromosome at each step, very good organization of these files is necessary to know what files have come from where and which .dat, .ped, and .fam files correspond. This function creates the directory and subdirectory structure, and it also returns the names of all the subdirectories, which can be easily used as out$d0 to out$d10. See the demo "gendemo" that shows how to effortlessly use this return variable when calling all the pre-processing steps.  
+        The subdirectory structure is designed to easily work with preprocessing functions of GenMOSS. Since GenMOSS preprocessing steps need to be performed in a fixed order, and there are several files per chromosome at each step, very good organization of these files is necessary to know what files have come from where and which .dat, .ped, and .fam files correspond. This function creates the directory and subdirectory structure, and it also returns the names of all the subdirectories, which can be easily used as out$d0 to out$d11. See the demo "gendemo" that shows how to effortlessly use this return variable when calling all the pre-processing steps.  
 }
 \value{
 \item{out$d0}{The name of subdirectory into which original data should be placed.}
@@ -37,6 +37,7 @@ pre0.dir.create(dir.out = ".", out.name = "newdata", prefix.dir = "d")
 \item{out$d8}{The name of subdirectory into which data converted to binary should go. This can be done by \code{\link{pre6.discretize.batch}}. }
 \item{out$d9}{The name of subdirectory into which binary data merged across all chromosomes should go. This can be done by \code{\link{pre7.merge.genos}}. }
 \item{out$d10}{The name of subdirectory into which merged data split into train and test sets should go. Also all the main GenMOSS computation would go into this subdirectory. The train-test split can be done by \code{\link{pre9.split.train.test.batch}}. }
+\item{out$d11}{The name of subdirectory into which desired subsets of the data should go. Also all the main GenMOSS computation for each subset would go into this subdirectory. The train-test split can be done by \code{\link{pre9.split.train.test.batch}}. }
 }
 \author{
 Olia Vesselova

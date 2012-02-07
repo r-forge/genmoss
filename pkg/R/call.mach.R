@@ -1,7 +1,11 @@
-call.mach <- function(file.dat, file.ped="", dir.file, ref.phase, ref.legend, dir.ref, prefix="ans", dir.out=".", num.iters=2, num.subjects=200, resample=FALSE, mach.loc="/software/mach1") {
+call.mach <- function(file.dat, file.ped="", dir.file, ref.phase, ref.legend, dir.ref, prefix="ans", dir.out=".", num.iters=2, num.subjects=200, resample=FALSE, hapmapformat=FALSE, mach.loc="/software/mach1") {
 #
 # Calls MaCH1 program with Hapmap on the file.ped and file.dat, making use of
 # two reference files: ref.phase and ref.legend. 
+#
+# hapmapformat - refers to the use of old file format with .legend.txt.
+#     If you use the 1000G haplotype dataset from MaCH's website, this 
+#     parameter defaults to FALSE.
 #
 # The MaCH1 algorithm requires 2 steps to be performed.
 # The first step of MaCH1 will be run on num.subjects randomly chosen from the set.
@@ -46,7 +50,7 @@ call.mach <- function(file.dat, file.ped="", dir.file, ref.phase, ref.legend, di
 #
 
 # TODO: remove this line:
-#source("rand.ints.R")
+# source("rand.ints.R")
 
 # *************************************************************************
 # 1. Randomly choose a subset of num.subjects and create short versions of
@@ -74,12 +78,23 @@ if (num.subjects > 0) {
 
 prefix1 <- paste(prefix, ".1", sep="")
 
-step1 <- paste("time ", mach.loc, "/mach1 -d ", dir.file, "/", file.dat, " -p ", out.ped, " -s ", dir.ref, "/", ref.legend, " -h ", dir.ref, "/", ref.phase, " --hapmapFormat --greedy -r ", num.iters, " --autoflip --prefix ", dir.out, "/", prefix1, sep="")
+step1 <- paste("time ", mach.loc, "/mach1 -d ", dir.file, "/", file.dat, " -p ", out.ped, " -s ", dir.ref, "/", ref.legend, " -h ", dir.ref, "/", ref.phase, " -r ", num.iters, " --autoflip --prefix ", dir.out, "/", prefix1, sep="")
 
-step2 <- paste("time ", mach.loc, "/mach1 -d ", dir.file, "/", file.dat, " -p ", dir.file, "/", file.ped, " -s ", dir.ref, "/", ref.legend, " -h ", dir.ref, "/", ref.phase, " --hapmapFormat --crossover ", dir.out, "/", prefix1, ".rec --errormap ", dir.out, "/", prefix1, ".erate --greedy --autoflip --mle --mldetails --prefix ", dir.out, "/", prefix, sep="")
+step2 <- paste("time ", mach.loc, "/mach1 -d ", dir.file, "/", file.dat, " -p ", dir.file, "/", file.ped, " -s ", dir.ref, "/", ref.legend, " -h ", dir.ref, "/", ref.phase, " --crossover ", dir.out, "/", prefix1, ".rec --errormap ", dir.out, "/", prefix1, ".erate --greedy --autoflip --mle --mldetails --prefix ", dir.out, "/", prefix, sep="")
+
+if(hapmapformat) {
+	step1 <- paste(step1, " --hapmapFormat", sep="")
+	step2 <- paste(step2, " --hapmapFormat", sep="")
+}
+#step1 <- paste("time ", mach.loc, "/mach1 -d ", dir.file, "/", file.dat, " -p ", out.ped, " -s ", dir.ref, "/", ref.legend, " -h ", dir.ref, "/", ref.phase, " --hapmapFormat --greedy -r ", num.iters, " --autoflip --prefix ", dir.out, "/", prefix1, sep="")
+
+#step2 <- paste("time ", mach.loc, "/mach1 -d ", dir.file, "/", file.dat, " -p ", dir.file, "/", file.ped, " -s ", dir.ref, "/", ref.legend, " -h ", dir.ref, "/", ref.phase, " --hapmapFormat --crossover ", dir.out, "/", prefix1, ".rec --errormap ", dir.out, "/", prefix1, ".erate --greedy --autoflip --mle --mldetails --prefix ", dir.out, "/", prefix, sep="")
+
+#step.call <- step1
 
 step.call <- paste(step1, " ; ", step2)
 
+print(step.call)
 p <- proc.time()
 system(step.call)
 print(proc.time() - p)

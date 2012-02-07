@@ -4,11 +4,10 @@ pre3.call.mach <- function(file.dat, file.ped, dir.file, ref.phase="", ref.legen
 # MaCH1 can be run in 2 different ways: 
 #  1. with hapmap, and 
 #  2. without hapmap.
-# This program first runs MaCH1 on file.ped with hapmap to fill in missing values for
-# those SNPs that exist in the reference file; and then MaCH1 is run on the result without
-# hapmap to fill in all the remaining missing values.
+# If ref.phase and ref.legend are provided, then this program runs MaCH1 on file.ped with hapmap,
+# resulting in file with as many SNPs as is present in the reference files.
 # If no reference files ref.phase and ref.legend are provided, then the program runs
-# MaCH1 without hapmap only. 
+# MaCH1 without hapmap. 
 #
 # Also, the MaCH1 algorithm requires 2 steps to be performed.
 # (a) The first step of MaCH1 will be run on num.subjects randomly chosen from the set.
@@ -49,7 +48,7 @@ pre3.call.mach <- function(file.dat, file.ped, dir.file, ref.phase="", ref.legen
 #         by this program. Recommended number of subjects is 200-500.
 #         Value <= 0 corresponds to using ALL the subjects in the dataset.
 # step2.subjects: how many individuals should be processed at a time during the
-#         second step of MaCH computation.
+#         second step of MaCH computation if run without hapmap.
 #         Value <= 0 will use ALL the subjects in the dataset.
 # 
 # Outputs: 
@@ -70,57 +69,67 @@ if(missing(dir.out)) stop("Name of the output directory is required.")
 # 0. Define full path names of all subdirectories
 dir.work <- paste(dir.out, "/working", sep="")
 dir.main <- paste(dir.work, "/dir_", substr(file.ped, 1, nchar(file.ped)-4), "_", num.subjects, "_", num.iters, "_", step2.subjects, sep="")
-dir.s1 <- paste(dir.main, "/s1_withhap", sep="")
-dir.s2 <- paste(dir.main, "/s2_converted", sep="")
-dir.s3 <- paste(dir.main, "/s3_nohap", sep="")
+#dir.s1 <- paste(dir.main, "/s1_withhap", sep="")
+#dir.s2 <- paste(dir.main, "/s2_converted", sep="")
+#dir.s3 <- paste(dir.main, "/s3_nohap", sep="")
 
-from.dir <- dir.file # will be replaced if hapmap is run.
-from.ped <- file.ped
+#from.dir <- dir.file # will be replaced if hapmap is run.
+#from.ped <- file.ped
 
-# 1. Create subdirectory structure:
+# 0. Create subdirectory structure:
 if(!file.exists(dir.work))
 	dir.create(dir.work)
 if(!file.exists(dir.main))
 	dir.create(dir.main)
-if(!file.exists(dir.s3))
-        dir.create(dir.s3)
+#if(!file.exists(dir.s3))
+#        dir.create(dir.s3)
 
 
-
-# 2. Call MaCH1 WITH hapmap, and then convert the output to readable input format.
-if(ref.phase != "" && ref.legend != "" && file.exists(paste(dir.ref, ref.phase, sep="/")) && file.exists(paste(dir.ref, ref.legend, sep="/"))) {
-
-	if(!file.exists(dir.s1))
-		dir.create(dir.s1)
-	if(!file.exists(dir.s2))
-		dir.create(dir.s2)
-
-	# Erase everything from 2 directories if fresh start is needed:
-	if(resample==TRUE) {
-		file.remove(dir(dir.s1, full.names=TRUE))
-		file.remove(dir(dir.s2, full.names=TRUE))
-	}
-
-	prefix1 <- paste("hap", chrom.num, sep="")	
-
-	call.mach(file.dat=file.dat, file.ped=file.ped, dir.file=dir.file, ref.phase=ref.phase, ref.legend=ref.legend, dir.ref=dir.ref, prefix=prefix1, dir.out=dir.s1, num.iters=num.iters, num.subjects=num.subjects, resample=resample, mach.loc=mach.loc)
-
-	from.ped <- machout2machin(prefix=prefix1, dir.prefix=dir.s1, dat=file.dat, name.ped=file.ped, dir.dat=dir.file, dir.out=dir.s2, num.nonsnp.cols=5)
-
-	from.dir <- dir.s2
+# Erase everything from the directory if fresh start is needed:
+if(resample==TRUE) {
+	file.remove(dir(dir.main, full.names=TRUE))
 }
 
-# Erase everything from last directory:
-if(resample==TRUE)
-	file.remove(dir(dir.s3, full.names=TRUE))
 
-#3. Call MaCH1 without hapmap.
+# 1. IF HAPMAP: Call MaCH1 WITH hapmap, and then convert the output to readable input format.
+if(ref.phase != "" && ref.legend != "" && file.exists(paste(dir.ref, ref.phase, sep="/")) && file.exists(paste(dir.ref, ref.legend, sep="/"))) {
 
-call.mach.nohap(file.dat=file.dat, dir.dat=dir.file, file.ped=from.ped, dir.file=from.dir, dir.out=dir.out, dir.debug=dir.s3, prefix=paste(out.prefix, chrom.num, sep=""), num.iters=num.iters, num.subjects=num.subjects, step2.subjects=step2.subjects, resample=resample, empty=empty, mach.loc=mach.loc)
+	#if(!file.exists(dir.s1))
+	#	dir.create(dir.s1)
+	#if(!file.exists(dir.s2))
+	#	dir.create(dir.s2)
+
+	# Erase everything from 2 directories if fresh start is needed:
+#	if(resample==TRUE) {
+#		file.remove(dir(dir.s1, full.names=TRUE))
+#		file.remove(dir(dir.s2, full.names=TRUE))
+#	}
+
+	prefix1 <- paste(out.prefix, chrom.num, sep="")	
+
+	call.mach(file.dat=file.dat, file.ped=file.ped, dir.file=dir.file, ref.phase=ref.phase, ref.legend=ref.legend, dir.ref=dir.ref, prefix=prefix1, dir.out=dir.main, num.iters=num.iters, num.subjects=num.subjects, resample=resample, mach.loc=mach.loc)
+
+	get.file.copy(dir.in=dir.main, dir.out=dir.out, prefix=prefix1, ending="mlgeno")
+
+	#machout2machin(prefix=prefix1, dir.prefix=dir.main, dat=file.dat, name.ped=file.ped, dir.dat=dir.file, dir.out=dir.out, num.nonsnp.cols=5)
+
+#	from.dir <- dir.s2
+} else {
+
+	# 2. ELSE: Call Mach1 without hapmap
+
+
+	# Erase everything from last directory:
+#	if(resample==TRUE)
+#		file.remove(dir(dir.main, full.names=TRUE)) #dir.s3
+
+	call.mach.nohap(file.dat=file.dat, dir.dat=dir.file, file.ped=file.ped, dir.file=dir.file, dir.out=dir.out, dir.debug=dir.main, prefix=paste(out.prefix, chrom.num, sep=""), num.iters=num.iters, num.subjects=num.subjects, step2.subjects=step2.subjects, resample=resample, empty=empty, mach.loc=mach.loc) #dir.debug=dir.s3
+
+}
 
 get.file.copy(dir.in=dir.file, dir.out=dir.out, fname=file.dat)
-#if(!file.exists(paste(dir.out, file.dat, sep="/")))
-#	ans <- file.copy(paste(dir.file, file.dat, sep="/"), paste(dir.out, file.dat, sep="/"))
+	#if(!file.exists(paste(dir.out, file.dat, sep="/")))
+	#	ans <- file.copy(paste(dir.file, file.dat, sep="/"), paste(dir.out, file.dat, sep="/"))
 
 }
 

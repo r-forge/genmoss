@@ -46,7 +46,7 @@ ex2plink <- function(dir.file, dir.out, file.name="genotypes_10_90.txt", annotat
 # ************************************************************ 
 #
 # This program will generate output files: 
-#   for each chromosome 3 files: CASE.ped, CONTROL.ped and .dat.
+#   for each chromosome 2 files: .ped and .dat 
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # The .ped output file will be of the format:
@@ -81,7 +81,6 @@ ex2plink <- function(dir.file, dir.out, file.name="genotypes_10_90.txt", annotat
 #   - Col 4: physical locations (Col 4 from annotation file)
 #   - Number of rows is the number of SNPs used in the given chromosome. (= number of SNP columns of .ped)
 #
-
 
 
 # Read in the data file and annotation file
@@ -202,7 +201,8 @@ while(i <= length(all.chroms.sort)) {
 	#ped.name.control <- paste(dir.out, "/", out.prefix.ped, curr.chrom, "CONTROL.ped", sep="")
 	#write.table(ped.file[(ped.file[,6]==2),], file=ped.name.case, col.names=FALSE, row.names=FALSE, quote=FALSE, sep="\t")
 	#write.table(ped.file[(ped.file[,6]==1),], file=ped.name.control, col.names=FALSE, row.names=FALSE, quote=FALSE, sep="\t")
-	
+
+	# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
 	# Prepare the .map file format:
 	# Col1: chrom number
 	# Col2: SNP ID, or Marker if no SNP ID
